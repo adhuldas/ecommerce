@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+    {% if category %}
+         {{category.desc |truncatewords:150}}
+    {% else %}
+         Welcome to Day 2 Day Cart where you experience next generation collections.
+    {% endif %}
+
+{% endblock %}
+{% block title %}
+    {% if category %}
+        {{category.name}}-Day 2 Day Cart
+    {% else %}
+        Experience Next Generation Clothing.
+    {% endif %}
+{% endblock %}
+{% block content %}
+    {% if category %}
+        <div class="row my_row_class">
+            <div class="mx-auto">
+                <a href="{% url 'ecommerceapp:allProdcat'%}">Back</a>
+                <p>{{category.name}}</p>
+            </div>
+        </div>
+    {% endif %}
+<div>
+    {% if category %}
+        <img src="{{category.img.url}}" alt="{{category.name}}" style="height:336px; width:280px;">
+</div><br>
+<div>
+    <h1>{{category.name}}</h1>
+    <p>{{category.desc}}</p>
+</div>
+    {% else %}
+        <div>
+           <center><img src="{% static 'img/banner.png' %}" alt="" style="height:400px; width:1349px;"></center>
+        </div><br>
+        <div>
+            <h1>PRODUCT COLLECTIONS</h1>
+            <p>Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Cicero's De Finibus Bonorum et Malorum for use in a type specimen book.</p>
+        </div>
+    {% endif %}
+<div class="container">
+    <div class="row max-auto">
+        {% for product in products %}
+            <div class="my_bottom_margin col-9-sm-12 col-md-4 col-lg-4">
+                <div class="card text-center" style="width: 18rem;">
+                    <a href="{{product.get_url}}"><img class="card-img-top my_image" src="{{product.img.url}}" alt="{{product.name}}" style="height:336px; width:280px;"></a>
+                    <div>
+                        <h4>{{product.name}}</h4>
+                        <p>₹{{product.price}}</p><br>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+     <div class="mx-auto">
+         <div class="text-center">
+             {% for pg in products.paginator.page_range %}
+             <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %} activate {% endif %}">{{pg}}</a>
+             {% endfor %}
+         </div>
+    </div>
+</div>
+{% endblock %}
